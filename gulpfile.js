@@ -9,6 +9,7 @@ var sh = require('shelljs');
 
 var paths = {
   sass: ['./scss/**/*.scss']
+  jade: ['./jade/**/*.jade']
 };
 
 gulp.task('default', ['sass']);
@@ -27,6 +28,7 @@ gulp.task('sass', function(done) {
 
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.jade, ['jade']);
 });
 
 gulp.task('install', ['git-check'], function() {
@@ -46,5 +48,13 @@ gulp.task('git-check', function(done) {
     );
     process.exit(1);
   }
-  done();
+
+gulp.task('jade', function (done) {
+    return gulp.src(paths.jade)
+      .pipe(jade())
+      .pipe(gulp.dest('./www/templates/'))
+      .on('end', done);
+});
+
+done();
 });
